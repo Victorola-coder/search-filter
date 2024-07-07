@@ -1,4 +1,4 @@
-tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -11,6 +11,6 @@ tailwind base;
 
 body {
   color: white;
-  background-color: black
-  font-family: "Lato", sans-serif;
+  background-color: black;
+  font-family: "Poppins", sans-serif;
 }

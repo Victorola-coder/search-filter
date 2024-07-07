@@ -1,5 +1,13 @@
 const App = () => {
-  <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  return (
+    <>
+      <header>
+        <nav>
+          <h3 className="">Search</h3>
+        </nav>
+      </header>
+    </>
+  );
 };
 
 export default App;
