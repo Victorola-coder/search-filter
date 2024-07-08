@@ -21,12 +21,13 @@ const App = () => {
     },
   ];
 
-  const [search, SetSearch] = useState("");
+  const [search, setSearch] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
-    SetSearch(value);
+    setSearch(value);
+    console.log(value);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -49,24 +50,31 @@ const App = () => {
         </nav>
       </header>
 
-      <main>
-        <div className="mx-[100px] h-[1px] bg-white mt-4">
-          <form onSubmit={handleSubmit} className="my-6">
-            <fieldset>
-              <input
-                type="text"
-                value={search}
-                name="search"
-                className="transparent"
-                onChange={handleChange}
-                id="search"
-              />
-            </fieldset>
-          </form>
-        </div>
+      <main className="mx-[100px]">
+        <div className="h-[1px] bg-white my-7"></div>
+        <form onSubmit={handleSubmit}>
+          <fieldset>
+            <input
+              type="text"
+              value={search}
+              name="search"
+              className="bg-transparent border rounded w-full py-3 px-4"
+              onChange={handleChange}
+              id="search"
+            />
+          </fieldset>
+
+          {search && <SearchResult />}
+        </form>
       </main>
     </>
   );
 };
 
 export default App;
+
+const SearchResult = () => {
+  return (
+    <div className="animate-fade-in mt-10 h-[300px] max-w-[500px] flex flex-col justify-between rounded-3xl border border-base-600 bg-base-800 p-6 transition-all hover:bg-base-700 bg-gray-600"></div>
+  );
+};
