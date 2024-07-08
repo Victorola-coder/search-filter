@@ -1,33 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface LinkProps {
+  id: number;
   title: string;
   path: string;
 }
 
 const App = () => {
   const Links: LinkProps[] = [
-    {
-      title: "Templates",
-      path: "/templates",
-    },
-    {
-      title: "Docs",
-      path: "/docs",
-    },
-    {
-      title: "Community",
-      path: "/community",
-    },
+    { id: 1, title: "Templates", path: "/templates" },
+    { id: 2, title: "Docs", path: "/docs" },
+    { id: 3, title: "Community", path: "/community" },
+    { id: 4, title: "Contact", path: "/contact" },
+    { id: 5, title: "Blog", path: "/blog" },
+    { id: 6, title: "Support", path: "/support" },
+    { id: 7, title: "Careers", path: "/careers" },
+    { id: 8, title: "News", path: "/news" },
+    { id: 9, title: "Events", path: "/events" },
+    { id: 10, title: "Jobs", path: "/jobs" },
   ];
+
+  const navLinks = Links.slice(0, 3);
 
   const [search, setSearch] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-
     setSearch(value);
-    console.log(value);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -41,8 +40,8 @@ const App = () => {
           <h3 className="text-3xl font-medium">Search</h3>
 
           <ul className="flex flex-row items-center gap-[30px]">
-            {Links.map((link, id) => (
-              <li key={id}>
+            {navLinks.map((link) => (
+              <li key={link.id}>
                 <a href={link.path}>{link.title}</a>
               </li>
             ))}
@@ -63,9 +62,9 @@ const App = () => {
               id="search"
             />
           </fieldset>
-
-          {search && <SearchResult />}
         </form>
+
+        <SearchResult search={search} links={Links} />
       </main>
     </>
   );
@@ -73,8 +72,37 @@ const App = () => {
 
 export default App;
 
-const SearchResult = () => {
+interface SearchResultProps {
+  search: string;
+  links: LinkProps[];
+}
+
+const SearchResult = ({ search, links }: SearchResultProps) => {
+  const [filteredLinks, setFilteredLinks] = useState<LinkProps[]>(links);
+
+  useEffect(() => {
+    const newFilteredLinks = links.filter((link) =>
+      link.title.toLowerCase().startsWith(search.toLowerCase())
+    );
+    setFilteredLinks(newFilteredLinks);
+  }, [search, links]);
+
   return (
-    <div className="animate-fade-in mt-10 h-[300px] max-w-[500px] flex flex-col justify-between rounded-3xl border border-base-600 bg-base-800 p-6 transition-all hover:bg-base-700 bg-gray-600"></div>
+    <div className="mt-10 flex flex-wrap gap-4">
+      {filteredLinks.length > 0 ? (
+        filteredLinks.map((link) => (
+          <div
+            key={link.id}
+            className={`card ${
+              filteredLinks.includes(link) ? "animate-fade-in" : "hidden"
+            }`}
+          >
+            <a href={link.path}>{link.title}</a>
+          </div>
+        ))
+      ) : (
+        <div className="animate-fade-in text-center">No results found</div>
+      )}
+    </div>
   );
 };
